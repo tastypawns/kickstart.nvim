@@ -870,6 +870,14 @@ require('lazy').setup({
     'neko-night/nvim',
     lazy = false,
     priority = 1000,
+    opts = {
+              transparent = True,
+            },
+  },
+  {
+    'paulfrische/reddish.nvim',
+    lazy = false,
+    priority = 1000,
     opts = {},
   },
   -- Highlight todo, notes, etc in comments

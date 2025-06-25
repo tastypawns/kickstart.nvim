@@ -478,7 +478,7 @@ require('lazy').setup({
       -- Automatically install LSPs and related tools to stdpath for Neovim
       -- Mason must be loaded before its dependents so we need to set it up here.
       -- NOTE: `opts = {}` is the same as calling `require('mason').setup({})`
-      { 'mason-org/mason.nvim', opts = {} },
+      { 'mason-org/mason.nvim', opts = { pip = { upgrade_pip = true, clear = true } } },
       'mason-org/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
@@ -540,7 +540,7 @@ require('lazy').setup({
           map('gra', vim.lsp.buf.code_action, '[G]oto Code [A]ction', { 'n', 'x' })
 
           -- Find references for the word under your cursor.
-          map('grr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+          map('gtr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
 
           -- Jump to the implementation of the word under your cursor.
           --  Useful when your language has ways of declaring types without an actual implementation.
@@ -557,11 +557,11 @@ require('lazy').setup({
 
           -- Fuzzy find all the symbols in your current document.
           --  Symbols are things like variables, functions, types, etc.
-          map('gO', require('telescope.builtin').lsp_document_symbols, 'Open Document Symbols')
+          map('grO', require('telescope.builtin').lsp_document_symbols, 'Open Document Symbols')
 
           -- Fuzzy find all the symbols in your current workspace.
           --  Similar to document symbols, except searches over your entire project.
-          map('gW', require('telescope.builtin').lsp_dynamic_workspace_symbols, 'Open Workspace Symbols')
+          map('grW', require('telescope.builtin').lsp_dynamic_workspace_symbols, 'Open Workspace Symbols')
 
           -- Jump to the type of the word under your cursor.
           --  Useful when you're not sure what type a variable is and you want to see
@@ -669,16 +669,17 @@ require('lazy').setup({
       local servers = {
         -- clangd = {},
         -- gopls = {},
-        pylsp = {
-          plugins = {
-            pylint = { enabled = false },
-            pyflakes = { enabled = false },
-            pycodestyle = { enabled = false },
-            pydocstyle = { enabled = false },
-            autopep8 = { enabled = false },
-            flake8 = { enabled = false },
-          },
-        },
+        pyright = {},
+        -- pylsp = {
+        -- plugins = {
+        -- pylint = { enabled = false },
+        -- pyflakes = { enabled = false },
+        -- pycodestyle = { enabled = false },
+        -- pydocstyle = { enabled = false },
+        -- autopep8 = { enabled = false },
+        -- flake8 = { enabled = false },
+        -- },
+        -- },
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -846,49 +847,49 @@ require('lazy').setup({
         --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
       },
 
-	  -- HEAD start for merge
-	  -- commented out any code
-          -- Accept ([y]es) the completion.
-          --  This will auto-import if your LSP supports it.
-          --  This will expand snippets if the LSP sent a snippet.
-          --['<C-y>'] = cmp.mapping.confirm { select = true },
-          -- ['<C-Space>'] = cmp.mapping.confirm { select = true },
+      -- HEAD start for merge
+      -- commented out any code
+      -- Accept ([y]es) the completion.
+      --  This will auto-import if your LSP supports it.
+      --  This will expand snippets if the LSP sent a snippet.
+      --['<C-y>'] = cmp.mapping.confirm { select = true },
+      -- ['<C-Space>'] = cmp.mapping.confirm { select = true },
 
-          -- If you prefer more traditional completion keymaps,
-          -- you can uncomment the following lines
-          --['<CR>'] = cmp.mapping.confirm { select = true },
-          --['<Tab>'] = cmp.mapping.confim(),
-          --['<S-Tab>'] = cmp.mapping.select_prev_item(),
+      -- If you prefer more traditional completion keymaps,
+      -- you can uncomment the following lines
+      --['<CR>'] = cmp.mapping.confirm { select = true },
+      --['<Tab>'] = cmp.mapping.confim(),
+      --['<S-Tab>'] = cmp.mapping.select_prev_item(),
 
-          -- Manually trigger a completion from nvim-cmp.
-          --  Generally you don't need this, because nvim-cmp will display
-          --  completions whenever it has completion options available.
-          --['<C-Space>'] = cmp.mapping.complete {},
+      -- Manually trigger a completion from nvim-cmp.
+      --  Generally you don't need this, because nvim-cmp will display
+      --  completions whenever it has completion options available.
+      --['<C-Space>'] = cmp.mapping.complete {},
 
-          -- Think of <c-l> as moving to the right of your snippet expansion.
-          --  So if you have a snippet that's like:
-          --  function $name($args)
-          --    $body
-          --  end
-          --
-          -- <c-l> will move you to the right of each of the expansion locations.
-          -- <c-h> is similar, except moving you backwards.
-          -- ['<C-l>'] = cmp.mapping(function()
-          --  if luasnip.expand_or_locally_jumpable() then
-          --    luasnip.expand_or_jump()
-          --  end
-          -- end, { 'i', 's' }),
-          -- ['<C-h>'] = cmp.mapping(function()
-          --   if luasnip.locally_jumpable(-1) then
-          --     luasnip.jump(-1)
-          --   end
-          -- end, { 'i', 's' }),
+      -- Think of <c-l> as moving to the right of your snippet expansion.
+      --  So if you have a snippet that's like:
+      --  function $name($args)
+      --    $body
+      --  end
+      --
+      -- <c-l> will move you to the right of each of the expansion locations.
+      -- <c-h> is similar, except moving you backwards.
+      -- ['<C-l>'] = cmp.mapping(function()
+      --  if luasnip.expand_or_locally_jumpable() then
+      --    luasnip.expand_or_jump()
+      --  end
+      -- end, { 'i', 's' }),
+      -- ['<C-h>'] = cmp.mapping(function()
+      --   if luasnip.locally_jumpable(-1) then
+      --     luasnip.jump(-1)
+      --   end
+      -- end, { 'i', 's' }),
 
-          -- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
-          --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
-	  --    END HEAD
-	  --
-	--   Begin new code, leaving all in  
+      -- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
+      --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
+      --    END HEAD
+      --
+      --   Begin new code, leaving all in
 
       appearance = {
         -- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
@@ -906,7 +907,7 @@ require('lazy').setup({
         default = { 'lsp', 'path', 'snippets', 'lazydev' },
         providers = {
           lazydev = { module = 'lazydev.integrations.blink', score_offset = 100 },
-	  -- END MERGE
+          -- END MERGE
         },
       },
 
@@ -954,8 +955,8 @@ require('lazy').setup({
     lazy = false,
     priority = 1000,
     opts = {
-              transparent = True,
-            },
+      transparent = True,
+    },
   },
   {
     'paulfrische/reddish.nvim',

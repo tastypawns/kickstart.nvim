@@ -105,6 +105,9 @@ vim.o.number = true
 --  Experiment for yourself to see if you like it!
 vim.opt.relativenumber = true
 
+-- true color
+vim.opt.termguicolors = true
+
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.o.mouse = 'a'
 
@@ -670,7 +673,9 @@ require('lazy').setup({
         -- clangd = {},
         -- gopls = {},
         pyright = {},
-        -- pylsp = {
+        --{ enabled = false },
+        -- do we enable??
+        pylsp = {},
         -- plugins = {
         -- pylint = { enabled = false },
         -- pyflakes = { enabled = false },
@@ -762,7 +767,8 @@ require('lazy').setup({
         -- Disable "format_on_save lsp_fallback" for languages that don't
         -- have a well standardized coding style. You can add additional
         -- languages here or re-enable it for the disabled ones.
-        local disable_filetypes = { c = true, cpp = true }
+        -- disable autoformat [tastypawns]
+        local disable_filetypes = { c = true, cpp = true, python = true }
         if disable_filetypes[vim.bo[bufnr].filetype] then
           return nil
         else
@@ -955,8 +961,30 @@ require('lazy').setup({
     lazy = false,
     priority = 1000,
     opts = {
-      transparent = True,
+      transparent = false,
     },
+  },
+  {
+    'scottmckendry/cyberdream.nvim',
+    lazy = false,
+    priority = 1000,
+    options = {
+      transparent = false,
+    },
+  },
+  {
+    'EdenEast/nightfox.nvim',
+    lazy = false,
+    priority = 1000,
+  },
+  {
+    'uloco/bluloco.nvim',
+    lazy = false,
+    priority = 1000,
+    dependencies = { 'rktjmp/lush.nvim' },
+    config = function()
+      -- your optional config goes here, see below.
+    end,
   },
   {
     'paulfrische/reddish.nvim',
